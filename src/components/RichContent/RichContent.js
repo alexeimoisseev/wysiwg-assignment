@@ -7,15 +7,15 @@ import {
     convertFromHTML,
     Editor,
     EditorState,
+    getVisibleSelectionRect,
     RichUtils,
 } from 'draft-js';
 
 import 'draft-js/dist/Draft.css';
 import './RichContent.css';
-import Comment from '../Comment/Comment.js';
-import { addComment } from '../../actions/addComment';
+import Comment from '../Comment/Comment';
+import CommentForm from '../CommentForm/CommentForm';
 import { html } from '../../consts/html';
-
 
 class RichContent extends Component {
     constructor() {
@@ -29,6 +29,10 @@ class RichContent extends Component {
         ]);
         this.state = {
             editorState: EditorState.createEmpty(this.decorator),
+            formPosition: {
+                left: -9000,
+                top: -9000,
+            },
         };
     }
 
@@ -46,7 +50,32 @@ class RichContent extends Component {
     }
 
     onChange = (editorState) => {
+        this.showEditPopup(editorState);
         this.setState({ editorState });
+    }
+
+    showEditPopup(editorState) {
+        const selection = editorState.getSelection();
+        const selectionSize = selection.getEndOffset() - selection.getStartOffset();
+        if (selectionSize) {
+            const rect = getVisibleSelectionRect(window);
+            if (rect) {
+                this.setState({
+                    formPosition: {
+                        left: rect.left,
+                        top: rect.top + window.pageYOffset - 50,
+                    },
+                });
+            }
+
+        } else {
+            this.setState({
+                formPosition: {
+                    left: -9000,
+                    top: -9000,
+                },
+            });
+        }
     }
 
     createEntity = ({ text, id, color }) => {
@@ -76,10 +105,6 @@ class RichContent extends Component {
 
     addComment = async (event) => {
         event.preventDefault();
-        const { addComment } = this.props;
-        const comment = 'aa redux';
-        const newComment = await addComment(comment);
-        this.createEntity(newComment);
     }
 
     handleKeyCommand = (command, editorState) => {
@@ -103,7 +128,8 @@ class RichContent extends Component {
     }
 
     render() {
-        const { editorState } = this.state;
+        const { editorState, formPosition } = this.state;
+
         return (
             <div className="RichContent">
                 <button onClick={this.addComment}>Add comment</button>
@@ -111,6 +137,10 @@ class RichContent extends Component {
                     onChange={this.onChange}
                     editorState={editorState}
                     handleKeyCommand={this.handleKeyCommand}
+                />
+                <CommentForm
+                    top={ formPosition.top }
+                    left={ formPosition.left }
                 />
             </div>
         );
@@ -121,11 +151,7 @@ const mapStateToProps = (state) => ({
     comments: state.comments,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    addComment: addComment(dispatch),
-});
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(RichContent);

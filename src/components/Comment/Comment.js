@@ -9,8 +9,11 @@ class Comment extends Component {
         };
     }
 
-    getColor(color) {
-        return `rgba(${color}, 0.7)`;
+    getColor = (color) => {
+        const { hovered } = this.state;
+        return hovered ?
+            `rgba(${color}, 0.8)` :
+            `rgba(${color}, 0.5)`;
     }
 
     render() {

@@ -1,0 +1,6 @@
+.CommentForm {
+    position: absolute;
+    padding: 10px;
+    background-color: #ff0000;
+    z-index: 1;
+}
