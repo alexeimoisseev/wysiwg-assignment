@@ -7,26 +7,48 @@ class CommentsList extends Component {
         const { id, color } = comment;
         const { selectedComment } = this.props;
         return id === selectedComment ?
-            `rgba(${color}, 0.7)` :
-            `rgba(${color}, 0.3)`;
+            `rgba(${color}, 0.8)` :
+            `rgba(${color}, 0.5)`;
     }
+
+
+    isSelected = () => {}
 
     renderComments = () => {
         const {
             comments,
+            selectComment,
+            selectedComment,
         } = this.props;
-        return comments.map(comment =>
-            <div className="CommentsList__comment"
-                style={{ backgroundColor: this.getColor(comment) }}
-                key={comment.id}>
-                {comment.text}
-            </div>
-        );
+        return comments.map(comment =>{
+            const className = `CommentsList__comment ${comment.id === selectedComment ? 'CommentsList__comment_selected' : ''}`
+            return (
+                <div className={className}
+                    key={comment.id}
+                    onClick={() => {selectComment(comment.id)}}>
+                    <div className="CommentsList__commentDate">
+                        Created: {new Date(comment.created).toString()}
+                    </div>
+                    <div className="CommentsList__commentText">
+                        {comment.text}
+                    </div>
+
+                </div>
+
+            );
+        });
     }
+
+
     render() {
         return (
             <div className="CommentsList">
-                {this.renderComments()}
+                <div className="CommentsList__header">
+                    Comments:
+                </div>
+                <div className="CommentsList__list">
+                    {this.renderComments()}
+                </div>
             </div>
         );
     }
@@ -36,4 +58,17 @@ const mapStateToProps = (state) => ({
     selectedComment: state.selectedComment,
 });
 
-export default connect(mapStateToProps)(CommentsList);
+const mapDispatchToProps = (dispatch) => ({
+    selectComment: (id) => {
+        console.log('CLICKED!', id);
+        dispatch({
+            type: 'SELECT_COMMENT',
+            id,
+        });
+    },
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(CommentsList);

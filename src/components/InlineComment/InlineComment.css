@@ -1,0 +1,9 @@
+.InlineComment {
+    transition: background-color 0.2s ease-out;
+    cursor: pointer;
+    background-color: rgba(255, 196, 35, 0.3);
+}
+
+.InlineComment_selected {
+    background-color: rgba(255, 196, 35, 1);
+}

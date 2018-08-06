@@ -33,9 +33,10 @@ class CommentForm extends Component {
             left,
             top,
         } = this.props;
+        const _left = Math.min(left, window.innerWidth - 300);
         return (
             <div className="CommentForm" style={{
-                left: left,
+                left: _left,
                 top: top,
             }} >
                 <textarea value={ this.state.commentValue } onChange={ this.onValueChange } />

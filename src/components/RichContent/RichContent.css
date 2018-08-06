@@ -1,7 +1,11 @@
 .RichContent {
     position: relative;
+    border-radius: 5px;
+    background-color: #ffffff;
+    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
+
 }
 
-.Comment {
-    background-color: rgba(33, 33, 33, 0.3);
+.RichContent__editor {
+    padding: 30px;
 }

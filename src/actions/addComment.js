@@ -1,4 +1,3 @@
-let nextId = 0;
 const COLORS = [
     '43, 219, 192',
     '255, 196, 35',
@@ -11,30 +10,24 @@ function getColor(id) {
     return color;
 }
 
-// In real life this would be an asyncronous call
-// with making saving request to some backend.
-// With localStorage it is syncronous.
-// So let's add a fake promise to show that it's possible to make it async.
-async function saveComment(comment) {
-    return new Promise(resolve => {
-        const savedComments = window.localStorage.getItem('comments');
-        const comments = savedComments ? JSON.parse( savedComments) : [];
-        comments.push(comment);
-        window.localStorage.setItem('comments', JSON.stringify(comments));
-        setTimeout(() => {
-            resolve(comment);
-        }, 200);
-    });
+function saveComment(text) {
+    const savedComments = window.localStorage.getItem('comments');
+    const comments = savedComments ? JSON.parse( savedComments) : [];
+    const id = comments.length;
+    const comment = {
+        text,
+        id,
+        color: getColor(id),
+        created: (new Date()).getTime()
+    };
+    comments.push(comment);
+    window.localStorage.setItem('comments', JSON.stringify(comments));
+    return comment;
 }
 
 export function addComment(dispatch) {
-    return async (text) => {
-        const comment = {
-            text: text,
-            id: ++nextId,
-            color: getColor(nextId),
-        };
-        await saveComment(comment);
+    return (text) => {
+        const comment = saveComment(text);
         dispatch({
             type: 'ADD_COMMENT',
             payload: comment,

@@ -5,6 +5,7 @@ import {
     CompositeDecorator,
     ContentState,
     convertFromHTML,
+    convertFromRaw,
     Editor,
     EditorState,
     getVisibleSelectionRect,
@@ -13,22 +14,52 @@ import {
 
 import 'draft-js/dist/Draft.css';
 import './RichContent.css';
-import Comment from '../Comment/Comment';
+import Comment from '../InlineComment/InlineComment';
 import CommentForm from '../CommentForm/CommentForm';
+import saveEditorState from '../../actions/saveEditorState';
 import { html } from '../../consts/html';
+
+function findCommentEntities(contentBlock, callback, contentState) {
+    contentBlock.findEntityRanges(
+        (character) => {
+            const entityKey = character.getEntity();
+            return (
+                entityKey !== null &&
+                contentState.getEntity(entityKey).getType() === 'COMMENT'
+            );
+        },
+        callback
+    );
+}
+
+const decorator = new CompositeDecorator([
+    {
+        strategy: findCommentEntities,
+        component: Comment,
+    },
+]);
+
+function loadSavedDocument() {
+    const savedDocument = window.localStorage.getItem('document');
+    let savedContentState;
+    if (savedDocument) {
+        savedContentState = convertFromRaw(JSON.parse(savedDocument));
+    } else {
+        const blocks = convertFromHTML(html);
+        savedContentState = ContentState.createFromBlockArray(
+            blocks.contentBlocks,
+            blocks.entityMap
+        );
+    }
+    return EditorState.createWithContent(savedContentState, decorator);
+}
 
 class RichContent extends Component {
     constructor() {
         super();
 
-        this.decorator = new CompositeDecorator([
-            {
-                strategy: this.findCommentEntities,
-                component: Comment,
-            },
-        ]);
         this.state = {
-            editorState: EditorState.createEmpty(this.decorator),
+            editorState: EditorState.createEmpty(decorator),
             formPosition: {
                 left: -9000,
                 top: -9000,
@@ -36,20 +67,10 @@ class RichContent extends Component {
         };
     }
 
-    findCommentEntities = (contentBlock, callback, contentState) => {
-        contentBlock.findEntityRanges(
-            (character) => {
-                const entityKey = character.getEntity();
-                return (
-                    entityKey !== null &&
-                    contentState.getEntity(entityKey).getType() === 'COMMENT'
-                );
-            },
-            callback
-        );
-    }
+
 
     onChange = (editorState) => {
+        const {comments} = this.props;
         this.showEditPopup(editorState);
         this.setState({ editorState });
     }
@@ -63,7 +84,7 @@ class RichContent extends Component {
                 this.setState({
                     formPosition: {
                         left: rect.left,
-                        top: rect.top + window.pageYOffset - 50,
+                        top: rect.top + window.pageYOffset,
                     },
                 });
             }
@@ -78,7 +99,7 @@ class RichContent extends Component {
         }
     }
 
-    createEntity = ({ text, id, color }) => {
+    createEntity = ({ text, id, color, created }) => {
         const { editorState } = this.state;
         const contentState = editorState.getCurrentContent();
         const contentStateWithEntity = contentState.createEntity(
@@ -88,18 +109,32 @@ class RichContent extends Component {
                 value: text,
                 id,
                 color,
+                created,
             }
         );
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
         const modifiedState = EditorState.set(editorState, {
             currentContent: contentStateWithEntity,
         });
+        const newEditorState = RichUtils.toggleLink(
+            modifiedState,
+            modifiedState.getSelection(),
+            entityKey
+        );
         this.setState({
-            editorState: RichUtils.toggleLink(
-                modifiedState,
-                modifiedState.getSelection(),
-                entityKey
-            ),
+            editorState: newEditorState,
+        }, () => {
+            saveEditorState(newEditorState);
+        });
+    }
+
+    onCommentAdded = ({ text, id, color, created }) => {
+        this.createEntity({ text, id, color });
+        this.setState({
+            formPosition: {
+                left: -9000,
+                top: -9000,
+            },
         });
     }
 
@@ -108,31 +143,26 @@ class RichContent extends Component {
     }
 
     componentDidMount() {
-        const content = convertFromHTML(html);
-        const contentState = ContentState.createFromBlockArray(
-            content.contentBlocks,
-            content.entityMap
-        );
         this.setState({
-            editorState: EditorState.createWithContent(contentState, this.decorator),
+            editorState: loadSavedDocument(),
         });
     }
 
     render() {
         const { editorState, formPosition } = this.state;
-
         return (
             <div className="RichContent">
-                <button onClick={this.addComment}>Add comment</button>
-                <Editor
-                    onChange={this.onChange}
-                    editorState={editorState}
-                    handleKeyCommand={this.handleKeyCommand}
-                />
+                <div className="RichContent__editor">
+                    <Editor
+                        onChange={this.onChange}
+                        editorState={editorState}
+                        handleKeyCommand={this.handleKeyCommand}
+                    />
+                </div>
                 <CommentForm
                     top={ formPosition.top }
                     left={ formPosition.left }
-                    onCommentAdded={ this.createEntity }
+                    onCommentAdded={ this.onCommentAdded }
                 />
             </div>
         );
@@ -141,9 +171,9 @@ class RichContent extends Component {
 
 const mapStateToProps = (state) => ({
     comments: state.comments,
+    editorState: state.editorState,
 });
 
-
 export default connect(
-    mapStateToProps
+    mapStateToProps,
 )(RichContent);
