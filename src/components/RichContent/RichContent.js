@@ -107,15 +107,6 @@ class RichContent extends Component {
         event.preventDefault();
     }
 
-    handleKeyCommand = (command, editorState) => {
-        const newState = RichUtils.handleKeyCommand(editorState, command);
-        if (newState) {
-            this.onChange(newState);
-            return 'handled';
-        }
-        return 'not-handled';
-    }
-
     componentDidMount() {
         const content = convertFromHTML(html);
         const contentState = ContentState.createFromBlockArray(
@@ -141,6 +132,7 @@ class RichContent extends Component {
                 <CommentForm
                     top={ formPosition.top }
                     left={ formPosition.left }
+                    onCommentAdded={ this.createEntity }
                 />
             </div>
         );

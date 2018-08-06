@@ -19,13 +19,13 @@ class CommentForm extends Component {
     }
 
     clickAddComment = async () => {
-        const { addComment } = this.props;
+        const { addComment, onCommentAdded } = this.props;
         const { commentValue } = this.state;
         const newComment = await addComment(commentValue);
         this.setState({
             commentValue: '',
         });
-        console.log(newComment); //eslint-disable-line
+        onCommentAdded(newComment);
     }
 
     render() {

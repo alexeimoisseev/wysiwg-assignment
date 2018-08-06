@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import './Comment.css';
 
 class Comment extends Component {
@@ -21,8 +23,10 @@ class Comment extends Component {
             children,
             contentState,
             entityKey,
+            selectComment,
         } = this.props;
         const {
+            id,
             value,
             color,
         } = contentState.getEntity(entityKey).getData();
@@ -31,7 +35,7 @@ class Comment extends Component {
             <span
                 className="Comment"
                 style={{ backgroundColor: this.getColor(color) }}
-                onClick={() => {alert(value);}}
+                onClick={() => { selectComment(id); }}
                 onMouseOver={() => {
                     this.setState({
                         hovered: true,
@@ -48,4 +52,21 @@ class Comment extends Component {
     }
 }
 
-export default Comment;
+const mapStateToProps = (state) => ({
+    state,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    selectComment: (id) => {
+        dispatch({
+            type: 'SELECT_COMMENT',
+            id,
+        });
+    },
+});
+
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Comment);
