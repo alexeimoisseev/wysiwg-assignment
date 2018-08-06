@@ -2,8 +2,23 @@
     position: absolute;
     padding: 10px;
     background-color: #ff0000;
-    z-index: 1;
     width: 300px;
-    display: flex;
     flex-direction: column;
+    background-color: #C4C4C4;
+    box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1;
+    display: none;
+}
+
+.CommentForm textarea {
+    height: 100px;
+}
+
+.CommentForm button {
+    height: 40px;
+}
+
+.CommentForm_shown {
+    display: flex;
 }

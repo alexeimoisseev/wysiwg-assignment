@@ -6,6 +6,8 @@ import RichContent from './components/RichContent/RichContent';
 import CommentsList from './components/CommentsList/CommentsList';
 import rootReducer from './reducers';
 
+import {loadSavedDocument} from './actions/editorState';
+import InlineComment from './components/InlineComment/InlineComment';
 import './App.css';
 
 const store = createStore(
@@ -21,6 +23,15 @@ store.dispatch({
     payload: savedComments,
 })
 
+store.dispatch({
+    type: 'LOAD_EDITOR_STATE',
+    payload: loadSavedDocument(InlineComment)
+});
+
+function reset() {
+    window.localStorage.clear();
+    window.location.reload();
+}
 class App extends Component {
     render() {
         return (
@@ -28,6 +39,7 @@ class App extends Component {
                 <div className="App">
                     <RichContent />
                     <CommentsList />
+                    <button onClick={reset}>Reset</button>
                 </div>
             </Provider>
         );

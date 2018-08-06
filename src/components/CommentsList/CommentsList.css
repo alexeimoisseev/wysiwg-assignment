@@ -4,6 +4,7 @@
     border-radius: 5px;
     background-color: #ffffff;
     box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
 
 }
 .CommentsList__header {
@@ -14,10 +15,13 @@
     padding: 20px;
     margin: 10px 0;
     cursor: pointer;
-    background-color: rgba(255, 196, 35, 0.3);
 }
 
-.CommentsList__comment_selected {
+.CommentsList__comment:hover {
+    background-color: rgba(255, 196, 35, 0.5);
+}
+
+.CommentsList__comment_selected, .CommentsList__comment_selected:hover {
     background-color: rgba(255, 196, 35, 1);
 
 }

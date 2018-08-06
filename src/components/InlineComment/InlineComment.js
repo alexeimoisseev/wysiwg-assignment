@@ -6,10 +6,6 @@ import './InlineComment.css';
 
 class InlineComment extends Component {
 
-    getColor = (color) => {
-        return `rgba(${color}, 0.5)`;
-    }
-
     componentDidUpdate(prevProps) {
         if (this.isSelected()) {
             this.scrollTo();

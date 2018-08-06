@@ -1,6 +1,8 @@
-export function selectComment(id) {
-    return {
-        type: 'SELECT_COMMENT',
-        id: id,
-    };
+export default function selectComment(dispatch) {
+    return (id) => {
+        dispatch({
+            type: 'SELECT_COMMENT',
+            id,
+        });
+    }
 }

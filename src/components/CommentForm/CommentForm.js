@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addComment } from '../../actions/addComment';
+import addComment from '../../actions/addComment';
 import './CommentForm.css';
 
 class CommentForm extends Component {
@@ -28,22 +28,35 @@ class CommentForm extends Component {
         onCommentAdded(newComment);
     }
 
+    componentDidUpdate(prevProps) {
+        const {shown} = this.props;
+        if (shown && shown !== prevProps.shown) {
+            this.textarea.focus();
+        }
+    }
+
     render() {
+
         const {
             left,
             top,
+            shown,
         } = this.props;
-        const _left = Math.min(left, window.innerWidth - 300);
+        const className = `CommentForm ${shown ? 'CommentForm_shown' : ''}`
+        const _left = Math.min(left, window.innerWidth - 350);
         return (
-            <div className="CommentForm" style={{
+            <div className={className} style={{
                 left: _left,
                 top: top,
             }} >
-                <textarea value={ this.state.commentValue } onChange={ this.onValueChange } />
+                <textarea
+                    ref={(el) => {this.textarea = el;}}
+                    value={ this.state.commentValue }
+                    onChange={ this.onValueChange } />
                 <button
                     onClick={ this.clickAddComment }
                     disabled={ !this.state.commentValue }
-                >Add comment</button>
+                >Post comment</button>
             </div>
         );
     }

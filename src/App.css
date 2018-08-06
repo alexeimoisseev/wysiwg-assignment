@@ -1,9 +1,13 @@
 .App {
-  margin-bottom: 500px;
   padding: 20px;
 }
 
 body {
   scroll-behavior: smooth;
-  background-color: #EEEEEE;
+  background-color: #F2F2F2;
+  font-family: 'Open Sans', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
 }

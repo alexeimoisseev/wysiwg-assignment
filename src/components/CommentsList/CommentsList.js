@@ -1,18 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import './CommentsList.css';
+import selectComment from '../../actions/selectComment';
 
 class CommentsList extends Component {
-    getColor = (comment) => {
-        const { id, color } = comment;
-        const { selectedComment } = this.props;
-        return id === selectedComment ?
-            `rgba(${color}, 0.8)` :
-            `rgba(${color}, 0.5)`;
-    }
-
-
-    isSelected = () => {}
 
     renderComments = () => {
         const {
@@ -41,10 +32,11 @@ class CommentsList extends Component {
 
 
     render() {
+        const { comments } = this.props;
         return (
             <div className="CommentsList">
                 <div className="CommentsList__header">
-                    Comments:
+                    {comments.length ? 'Comments:' : 'No comments yet'}
                 </div>
                 <div className="CommentsList__list">
                     {this.renderComments()}
@@ -59,13 +51,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    selectComment: (id) => {
-        console.log('CLICKED!', id);
-        dispatch({
-            type: 'SELECT_COMMENT',
-            id,
-        });
-    },
+    selectComment: selectComment(dispatch),
 });
 
 export default connect(
