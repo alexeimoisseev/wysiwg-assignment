@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 
 import {
     CompositeDecorator,
@@ -7,13 +7,12 @@ import {
     convertFromHTML,
     Editor,
     EditorState,
-    Modifier,
     RichUtils,
 } from 'draft-js';
 
-import 'draft-js/dist/Draft.css'
+import 'draft-js/dist/Draft.css';
 import './RichContent.css';
-import Comment from '../Comment/Comment.js'
+import Comment from '../Comment/Comment.js';
 import { addComment } from '../../actions/addComment';
 import { html } from '../../consts/html';
 
@@ -27,10 +26,10 @@ class RichContent extends Component {
                 strategy: this.findCommentEntities,
                 component: Comment,
             },
-        ])
+        ]);
         this.state = {
             editorState: EditorState.createEmpty(this.decorator),
-        }
+        };
     }
 
     findCommentEntities = (contentBlock, callback, contentState) => {
@@ -50,37 +49,37 @@ class RichContent extends Component {
         this.setState({ editorState });
     }
 
-    createEntity = (text) => {
+    createEntity = ({ text, id, color }) => {
         const { editorState } = this.state;
         const contentState = editorState.getCurrentContent();
-        const id = Math.abs(Math.floor(Math.random() * 1000))
         const contentStateWithEntity = contentState.createEntity(
             'COMMENT',
             'MUTABLE',
             {
                 value: text,
-                id
+                id,
+                color,
             }
         );
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
         const modifiedState = EditorState.set(editorState, {
-            currentContent: contentStateWithEntity
+            currentContent: contentStateWithEntity,
         });
         this.setState({
             editorState: RichUtils.toggleLink(
                 modifiedState,
                 modifiedState.getSelection(),
                 entityKey
-            )
+            ),
         });
     }
 
-    addComment = (event) => {
+    addComment = async (event) => {
         event.preventDefault();
         const { addComment } = this.props;
         const comment = 'aa redux';
-        addComment(comment);
-        this.createEntity(comment);
+        const newComment = await addComment(comment);
+        this.createEntity(newComment);
     }
 
     handleKeyCommand = (command, editorState) => {
@@ -99,8 +98,8 @@ class RichContent extends Component {
             content.entityMap
         );
         this.setState({
-            editorState: EditorState.createWithContent(contentState, this.decorator)
-        })
+            editorState: EditorState.createWithContent(contentState, this.decorator),
+        });
     }
 
     render() {
@@ -112,21 +111,19 @@ class RichContent extends Component {
                     onChange={this.onChange}
                     editorState={editorState}
                     handleKeyCommand={this.handleKeyCommand}
-                    />
+                />
             </div>
         );
     }
 }
 
 const mapStateToProps = (state) => ({
-    comments: state.comments
+    comments: state.comments,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    addComment: (text) => dispatch(addComment(text))
-})
-
-
+    addComment: addComment(dispatch),
+});
 
 export default connect(
     mapStateToProps,

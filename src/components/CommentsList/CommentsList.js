@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import './CommentsList.css';
 
 class CommentsList extends Component {
@@ -12,7 +12,7 @@ class CommentsList extends Component {
         const { comments } = this.props;
         return comments.map(comment =>
             <div className="CommentsList__comment"
-                style={{backgroundColor: this.getColor(comment)}}
+                style={{ backgroundColor: this.getColor(comment) }}
                 key={comment.id}>
                 {comment.text}
             </div>
@@ -27,7 +27,7 @@ class CommentsList extends Component {
     }
 }
 const mapStateToProps = (state) => ({
-    comments: state.comments
+    comments: state.comments,
 });
 
 export default connect(mapStateToProps)(CommentsList);

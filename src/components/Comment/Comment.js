@@ -5,46 +5,39 @@ class Comment extends Component {
     constructor() {
         super();
         this.state = {
-            hovered: false
+            hovered: false,
         };
     }
-    static colors = [
-        '43, 219, 192',
-        '255, 196, 35',
-        '104, 112, 117',
-        '252, 107, 63',
-    ]
-    getColor = (id) => {
-        const {hovered} = this.state;
-        const colorId = id % Comment.colors.length;
-        const color = Comment.colors[colorId];
-        console.log(id, color)
-        return hovered ?
-            `rgba(${color}, 0.7)` :
-            `rgba(${color}, 0.3)`;
+
+    getColor(color) {
+        return `rgba(${color}, 0.7)`;
     }
+
     render() {
         const {
             children,
             contentState,
-            entityKey
+            entityKey,
         } = this.props;
-        const {value, id} = contentState.getEntity(entityKey).getData();
+        const {
+            value,
+            color,
+        } = contentState.getEntity(entityKey).getData();
 
         return (
             <span
                 className="Comment"
-                style={{backgroundColor: this.getColor(id)}}
-                onClick={() => {alert(value)}}
+                style={{ backgroundColor: this.getColor(color) }}
+                onClick={() => {alert(value);}}
                 onMouseOver={() => {
                     this.setState({
-                        hovered: true
-                    })
+                        hovered: true,
+                    });
                 }}
                 onMouseOut={() => {
                     this.setState({
-                        hovered: false
-                    })
+                        hovered: false,
+                    });
                 }}>
                 {children}
             </span>
