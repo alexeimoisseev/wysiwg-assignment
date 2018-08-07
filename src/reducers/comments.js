@@ -6,7 +6,7 @@ export default function comments(state = [], action) {
             action.payload,
         ];
     case 'LOAD_COMMENTS':
-        return [...action.payload];
+        return [ ...action.payload ];
     case 'REMOVE_COMMENT':
         return state.filter(comment => comment.id !== action.payload);
     default:

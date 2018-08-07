@@ -3,7 +3,7 @@ import {
     ContentState,
     convertFromHTML,
     convertFromRaw,
-    EditorState
+    EditorState,
 } from 'draft-js';
 
 import { html } from '../consts/html';

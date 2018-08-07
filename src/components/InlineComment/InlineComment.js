@@ -6,7 +6,7 @@ import './InlineComment.css';
 
 class InlineComment extends Component {
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate() {
         if (this.isSelected()) {
             this.scrollTo();
         }
@@ -39,7 +39,7 @@ class InlineComment extends Component {
             <span
                 ref={(el) => {this.element = el;}}
                 className={className}
-                >
+            >
                 {children}
             </span>
         );

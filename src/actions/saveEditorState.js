@@ -1,4 +1,4 @@
-import {convertToRaw} from 'draft-js';
+import { convertToRaw } from 'draft-js';
 
 export default function saveEditorState(editorState) {
     const contentState = editorState.getCurrentContent();

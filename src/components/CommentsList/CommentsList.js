@@ -12,11 +12,11 @@ class CommentsList extends Component {
             selectedComment,
         } = this.props;
         return comments.map(comment =>{
-            const className = `CommentsList__comment ${comment.id === selectedComment ? 'CommentsList__comment_selected' : ''}`
+            const className = `CommentsList__comment ${comment.id === selectedComment ? 'CommentsList__comment_selected' : ''}`;
             return (
                 <div className={className}
                     key={comment.id}
-                    onClick={() => {selectComment(comment.id)}}>
+                    onClick={() => {selectComment(comment.id);}}>
                     <div className="CommentsList__commentDate">
                         Created: {new Date(comment.created).toString()}
                     </div>

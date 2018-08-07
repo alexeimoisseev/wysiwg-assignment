@@ -5,7 +5,7 @@ function saveComment(text) {
     const comment = {
         text,
         id,
-        created: (new Date()).getTime()
+        created: (new Date()).getTime(),
     };
     comments.push(comment);
     window.localStorage.setItem('comments', JSON.stringify(comments));

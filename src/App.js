@@ -6,7 +6,7 @@ import RichContent from './components/RichContent/RichContent';
 import CommentsList from './components/CommentsList/CommentsList';
 import rootReducer from './reducers';
 
-import {loadSavedDocument} from './actions/editorState';
+import { loadSavedDocument } from './actions/editorState';
 import InlineComment from './components/InlineComment/InlineComment';
 import './App.css';
 
@@ -21,11 +21,11 @@ const savedComments = savedData ? JSON.parse(savedData) : [];
 store.dispatch({
     type: 'LOAD_COMMENTS',
     payload: savedComments,
-})
+});
 
 store.dispatch({
     type: 'LOAD_EDITOR_STATE',
-    payload: loadSavedDocument(InlineComment)
+    payload: loadSavedDocument(InlineComment),
 });
 
 function reset() {

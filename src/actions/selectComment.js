@@ -4,5 +4,5 @@ export default function selectComment(dispatch) {
             type: 'SELECT_COMMENT',
             id,
         });
-    }
+    };
 }

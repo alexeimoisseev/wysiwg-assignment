@@ -29,7 +29,7 @@ class CommentForm extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const {shown} = this.props;
+        const { shown } = this.props;
         if (shown && shown !== prevProps.shown) {
             this.textarea.focus();
         }
@@ -42,7 +42,7 @@ class CommentForm extends Component {
             top,
             shown,
         } = this.props;
-        const className = `CommentForm ${shown ? 'CommentForm_shown' : ''}`
+        const className = `CommentForm ${shown ? 'CommentForm_shown' : ''}`;
         const _left = Math.min(left, window.innerWidth - 350);
         return (
             <div className={className} style={{

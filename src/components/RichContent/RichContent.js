@@ -93,7 +93,7 @@ class RichContent extends Component {
     }
 
     onCommentAdded = ({ text, id, created }) => {
-        this.createEntity({ text, id });
+        this.createEntity({ text, id, created });
         this.setState({
             formShown: false,
             formPosition: {
@@ -108,7 +108,7 @@ class RichContent extends Component {
     }
 
     save = () => {
-        const {editorState} = this.props;
+        const { editorState } = this.props;
         saveEditorState(editorState);
         this.setState({
             dirty: false,
@@ -131,7 +131,7 @@ class RichContent extends Component {
                     className="RichContent__save"
                     disabled={!dirty}
                     onClick={this.save}
-                    >
+                >
                     Save
                 </button>
                 <CommentForm

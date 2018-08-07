@@ -1,0 +1,27 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "rules": {
+        "react/prop-types": "off",
+        "object-curly-spacing": [ "error", "always" ],
+        "array-bracket-spacing": [ "error", "always" ],
+        "indent": [ "error", 4 ],
+        "semi": [ "error", "always" ],
+        "comma-dangle": ["error", "always-multiline"]
+    },
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true,
+            "modules": true
+        }
+    }
+
+}
