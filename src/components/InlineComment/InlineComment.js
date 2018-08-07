@@ -5,7 +5,6 @@ import scrollToComponent from 'react-scroll-to-component';
 import './InlineComment.css';
 
 class InlineComment extends Component {
-
     componentDidUpdate() {
         if (this.isSelected()) {
             this.scrollTo();
@@ -58,7 +57,6 @@ const mapDispatchToProps = (dispatch) => ({
         });
     },
 });
-
 
 export default connect(
     mapStateToProps,

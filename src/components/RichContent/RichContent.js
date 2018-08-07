@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import {
     Editor,
     EditorState,
@@ -17,7 +16,6 @@ import saveEditorState from '../../actions/saveEditorState';
 class RichContent extends Component {
     constructor() {
         super();
-
         this.state = {
             dirty: false,
             formPosition: {
@@ -53,7 +51,6 @@ class RichContent extends Component {
                     formShown: true,
                 });
             }
-
         } else {
             this.setState({
                 formShown: false,

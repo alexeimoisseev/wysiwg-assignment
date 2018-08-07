@@ -9,7 +9,9 @@
         "array-bracket-spacing": [ "error", "always" ],
         "indent": [ "error", 4 ],
         "semi": [ "error", "always" ],
-        "comma-dangle": ["error", "always-multiline"]
+        "comma-dangle": [ "error", "always-multiline" ],
+        "no-multiple-empty-lines": [ "error", { "max": 1 } ],
+        "padded-blocks": [ "error", "never" ]
     },
     "env": {
         "browser": true,

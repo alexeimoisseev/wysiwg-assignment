@@ -18,7 +18,6 @@ export default function addComment(dispatch) {
         dispatch({
             type: 'ADD_COMMENT',
             payload: comment,
-
         });
         return comment;
     };

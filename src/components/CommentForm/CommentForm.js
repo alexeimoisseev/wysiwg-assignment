@@ -4,7 +4,6 @@ import addComment from '../../actions/addComment';
 import './CommentForm.css';
 
 class CommentForm extends Component {
-
     constructor() {
         super();
         this.state = {
@@ -36,7 +35,6 @@ class CommentForm extends Component {
     }
 
     render() {
-
         const {
             left,
             top,

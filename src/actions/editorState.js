@@ -5,7 +5,6 @@ import {
     convertFromRaw,
     EditorState,
 } from 'draft-js';
-
 import { html } from '../consts/html';
 import saveEditorState from './saveEditorState';
 

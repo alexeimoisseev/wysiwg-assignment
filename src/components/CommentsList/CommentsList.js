@@ -4,7 +4,6 @@ import './CommentsList.css';
 import selectComment from '../../actions/selectComment';
 
 class CommentsList extends Component {
-
     renderComments = () => {
         const {
             comments,
@@ -29,7 +28,6 @@ class CommentsList extends Component {
             );
         });
     }
-
 
     render() {
         const { comments } = this.props;
